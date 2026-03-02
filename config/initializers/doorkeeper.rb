@@ -19,6 +19,16 @@ Doorkeeper.configure do
     end
   end
 
+  # Allow password grant for the SPA Next.js client
+  grant_flows %w(password authorization_code implicit client_credentials)
+
+  resource_owner_from_credentials do |routes|
+    user = User.where('email = :eu or email_fallback = :eu or username = :eu', eu: params[:username]).first
+    if user && user.authenticate(params[:password])
+      user
+    end
+  end
+
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
   # file then you need to declare this block in order to restrict access to the web interface for
   # adding oauth authorized applications. In other case it will return 403 Forbidden response

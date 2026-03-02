@@ -165,6 +165,10 @@ Rails.application.routes.draw do
       post 'users/search' => 'users#search_users'
 
       get 'labs' => 'labs#index'
+      get 'labs/:slug' => 'labs#show'
+
+      resources :projects, only: [:index, :show]
+      resources :events, only: [:index, :show]
     end
 
     use_doorkeeper do
@@ -188,6 +192,10 @@ Rails.application.routes.draw do
     scope '/0' do
       get 'me' => 'api/profile#show'
       get 'labs', to: 'api/labs#index'
+      get 'labs/:slug', to: 'api/labs#show'
+      
+      resources :projects, only: [:index, :show], module: 'api'
+      resources :events, only: [:index, :show], module: 'api'
       # TODO: future redirect instead of proxy
       # get 'labs', to: redirect(status: 301, path: '/api/labs', subdomain: 'www')
     end

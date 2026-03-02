@@ -1,0 +1,16 @@
+0 verbose cli /Users/tomasdiez/.nvm/versions/node/v25.7.0/bin/node /Users/tomasdiez/.nvm/versions/node/v25.7.0/bin/npm
+1 info using npm@11.10.1
+2 info using node@v25.7.0
+3 silly config load:file:/Users/tomasdiez/.nvm/versions/node/v25.7.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/tomasdiez/.npmrc
+5 silly config load:file:/Users/tomasdiez/.nvm/versions/node/v25.7.0/etc/npmrc
+6 verbose title npm root
+7 verbose argv "root" "--global"
+8 verbose logfile logs-max:10 dir:/Users/tomasdiez/Web/fablabs.io/.npm-local-cache/_logs/2026-03-02T14_21_58_552Z-
+9 verbose logfile /Users/tomasdiez/Web/fablabs.io/.npm-local-cache/_logs/2026-03-02T14_21_58_552Z-debug-0.log
+10 verbose cwd /Users/tomasdiez
+11 verbose os Darwin 25.2.0
+12 verbose node v25.7.0
+13 verbose npm  v11.10.1
+14 verbose exit 0
+15 info ok

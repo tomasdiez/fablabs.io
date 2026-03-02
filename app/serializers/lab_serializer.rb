@@ -32,6 +32,10 @@ class LabSerializer < ActiveModel::Serializer
   # employees_attributes: [ :id, :job_title, :description ]
 
   has_many :links
+  has_many :employees
+  has_many :projects
+  has_many :events
+  has_many :machines
 
   # TODO: kind_name is breaking labs.json endpoint. Temporary comment out
   def kind_name
