@@ -6,32 +6,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navigation */}
-      <header className="fixed top-0 w-full z-50 border-b bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-tighter">
-              fablabs<span className="text-primary">.io</span>
-            </span>
-          </div>
-          <nav className="hidden md:flex gap-6 text-sm font-medium">
-            <Link href="/labs" className="hover:text-primary transition-colors">
-              Labs Map
-            </Link>
-            <Link href="/projects" className="hover:text-primary transition-colors">
-              Projects
-            </Link>
-            <Link href="/community" className="hover:text-primary transition-colors">
-              Community
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <a href="/login" className="text-sm font-medium hover:text-primary transition-colors">
-              Sign In
-            </a>
-            <Button>Join Network</Button>
-          </div>
-        </div>
-      </header>
+
 
       <main className="flex-1 pt-16">
         {/* Hero Section */}
@@ -52,15 +27,19 @@ export default function Home() {
             <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
               Connect with thousands of makers, discover cutting-edge projects, and locate the nearest Fab Lab to turn your ideas into reality.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="lg" className="w-full sm:w-auto gap-2">
-                <MapPin className="w-4 h-4" />
-                Find a Lab
-              </Button>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2">
-                <Search className="w-4 h-4" />
-                Explore Projects
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+              <Link href="/labs" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full gap-2 hover:scale-105 transition-transform duration-300 shadow-md">
+                  <MapPin className="w-4 h-4" />
+                  Find a Lab
+                </Button>
+              </Link>
+              <Link href="/search" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full gap-2 hover:scale-105 transition-transform duration-300 hover:bg-primary/5 hover:text-primary">
+                  <Search className="w-4 h-4" />
+                  Explore Network
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

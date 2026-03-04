@@ -10,7 +10,7 @@ class Api::LabsController < Api::ApiController
     begin
       @lab = with_approved_or_pending_state(params[:slug])
       # The UI controller includes many associations.
-      render json: @lab, serializer: LabSerializer
+      render json: @lab, serializer: LabSerializer, include: ['links', 'projects', 'events', 'machines', 'employees.user']
     rescue ActiveRecord::RecordNotFound
       render json: { error: 'Not found' }, status: :not_found
     end

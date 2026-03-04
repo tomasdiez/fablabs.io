@@ -122,3 +122,9 @@ gem 'bcrypt'
 
 # Use unicorn as the app server
 # gem 'unicorn'
+
+gem 'logger'
+gem 'mutex_m'
+gem 'base64'
+gem 'bigdecimal'
+gem 'drb'

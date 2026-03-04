@@ -1,3 +1,3 @@
 class LinkSerializer < ActiveModel::Serializer
-  attributes :id, :url
+  attributes :id, :url, :description
 end

@@ -2,9 +2,31 @@
 
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, ExternalLink, Mail, MapPin, Phone, Facebook, Instagram, Linkedin, MessageCircle, Link2, Printer, Cog, Cpu, Zap, Crosshair, Scissors, Brain, Blocks, Wifi, Navigation, Map as MapIcon, Users, CheckCircle2, Box, Briefcase, Github } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
+// Extracted Domain Parser logic for External Repositories
+import { Gitlab } from "lucide-react";
+
+function getDomainIcon(url: string) {
+    if (!url) return <Link2 className="w-5 h-5 text-muted-foreground" />;
+    const lower = url.toLowerCase();
+    if (lower.includes('thingiverse.com') || lower.includes('printables.com') || lower.includes('makerworld.com')) return <Box className="w-5 h-5 text-blue-500" />;
+    if (lower.includes('wikifactory.com')) return <Briefcase className="w-5 h-5 text-red-500" />;
+    if (lower.includes('github.com')) return <Github className="w-5 h-5" />;
+    if (lower.includes('gitlab.com')) return <Gitlab className="w-5 h-5 text-orange-500" />;
+    return <Link2 className="w-5 h-5 text-muted-foreground" />;
+}
+
+function getDomainName(url: string) {
+    try {
+        const u = new URL(url);
+        return u.hostname.replace('www.', '');
+    } catch {
+        return 'External Link';
+    }
+}
 
 interface Link {
     url: string;
@@ -49,6 +71,8 @@ interface Lab {
     description: string;
     city: string;
     country_code: string;
+    latitude?: number;
+    longitude?: number;
     email: string;
     phone: string;
     avatar_url?: string;
@@ -139,11 +163,35 @@ export default function LabProfile() {
                             <h2 className="text-2xl font-bold border-b pb-2">Capabilities</h2>
                             <div className="flex flex-wrap gap-2">
                                 {lab.capabilities && lab.capabilities.length > 0 ? (
-                                    lab.capabilities.map((cap) => (
-                                        <span key={cap} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-sm font-medium">
-                                            {cap}
-                                        </span>
-                                    ))
+                                    lab.capabilities.map((cap) => {
+                                        const capabilityConfig: Record<string, { icon: any, label: string }> = {
+                                            three_d_printing: { icon: Printer, label: "3D Printing" },
+                                            cnc_milling: { icon: Cog, label: "CNC Milling" },
+                                            circuit_production: { icon: Cpu, label: "Circuit Production" },
+                                            laser: { icon: Zap, label: "Laser Cutting" },
+                                            precision_milling: { icon: Crosshair, label: "Precision Milling" },
+                                            vinyl_cutting: { icon: Scissors, label: "Vinyl Cutting" },
+                                            ai: { icon: Brain, label: "Artificial Intelligence (AI)" },
+                                            blockchain: { icon: Blocks, label: "Blockchain" },
+                                            iot: { icon: Wifi, label: "Internet of Things (IoT)" },
+                                            drone_mapping: { icon: Navigation, label: "Drone Mapping" },
+                                            gis: { icon: MapIcon, label: "GIS" },
+                                            community_engagement: { icon: Users, label: "Community Engagement" }
+                                        };
+
+                                        const config = capabilityConfig[cap.toLowerCase()] || {
+                                            icon: CheckCircle2,
+                                            label: cap.replace(/_/g, ' ')
+                                        };
+                                        const Icon = config.icon;
+
+                                        return (
+                                            <span key={cap} className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-full text-sm font-medium flex items-center gap-2 capitalize border shadow-sm border-border/50">
+                                                <Icon className="w-4 h-4 text-primary" />
+                                                {config.label}
+                                            </span>
+                                        );
+                                    })
                                 ) : (
                                     <p className="text-muted-foreground">Capabilities not listed.</p>
                                 )}
@@ -166,59 +214,60 @@ export default function LabProfile() {
                             </section>
                         )}
 
-                        {lab.projects && lab.projects.length > 0 && (
-                            <section className="space-y-6">
-                                <h2 className="text-2xl font-bold border-b pb-2">Projects</h2>
-                                <div className="flex flex-col gap-4">
-                                    {lab.projects.map((project) => (
-                                        <div key={project.id} className="p-4 bg-card shadow-sm border rounded-xl flex items-center justify-between group hover:border-primary transition-colors cursor-pointer">
-                                            <div className="flex items-center gap-4">
-                                                {project.featured_image_url ? (
-                                                    <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0">
-                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                        <img src={project.featured_image_url} alt={project.title} className="w-full h-full object-cover" />
+                        {/* External Repositories (Lab level) */}
+                        {(() => {
+                            const repoLinks = lab.links?.filter(l => !l.url.includes("instagram.com") && !l.url.includes("facebook.com") && !l.url.includes("linkedin.com") && !l.url.includes("wa.me"));
+                            if (!repoLinks || repoLinks.length === 0) return null;
+
+                            return (
+                                <section className="space-y-6">
+                                    <h2 className="text-2xl font-bold border-b pb-2">External Repositories</h2>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {repoLinks.map((link: any, idx: number) => (
+                                            <a href={link.url} target="_blank" rel="noopener noreferrer" key={link.id || idx} className="group block">
+                                                <div className="bg-card border rounded-2xl p-4 flex items-center gap-4 hover:border-primary hover:shadow-md transition-all h-full">
+                                                    <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center shrink-0 border border-border/50">
+                                                        {getDomainIcon(link.url)}
                                                     </div>
-                                                ) : (
-                                                    <div className="w-16 h-16 rounded-lg bg-secondary shrink-0" />
-                                                )}
-                                                <div>
-                                                    <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">{project.title}</h3>
+                                                    <div className="flex-1 min-w-0">
+                                                        <h3 className="font-bold text-lg group-hover:text-primary transition-colors truncate">{link.description || getDomainName(link.url)}</h3>
+                                                        <p className="text-sm text-muted-foreground truncate">{link.url}</p>
+                                                    </div>
+                                                    <ExternalLink className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity -mr-2" />
                                                 </div>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </section>
+                            );
+                        })()}
+
+                        {lab.employees && lab.employees.length > 0 && (
+                            <section className="space-y-6">
+                                <h2 className="text-2xl font-bold border-b pb-2">Lab Members</h2>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {lab.employees.map((emp) => emp.user ? (
+                                        <div key={emp.id} className="p-5 rounded-2xl bg-card border shadow-sm flex flex-col items-center text-center gap-3 hover:border-primary transition-colors cursor-pointer group">
+                                            <div className="w-20 h-20 rounded-full bg-secondary overflow-hidden shrink-0 flex items-center justify-center border-4 border-background shadow-sm group-hover:scale-105 transition-transform">
+                                                {emp.user.avatar_url ? (
+                                                    // eslint-disable-next-line @next/next/no-img-element
+                                                    <img src={emp.user.avatar_url} alt={emp.user.name} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <span className="font-bold text-xl">{emp.user.name.charAt(0)}</span>
+                                                )}
                                             </div>
-                                            <Button variant="ghost" size="icon">
-                                                <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary" />
-                                            </Button>
+                                            <div>
+                                                <h3 className="font-semibold text-lg leading-tight group-hover:text-primary transition-colors">{emp.user.name}</h3>
+                                                {emp.job_title && <p className="text-sm text-muted-foreground mt-1">{emp.job_title}</p>}
+                                            </div>
                                         </div>
-                                    ))}
+                                    ) : null)}
                                 </div>
                             </section>
                         )}
                     </div>
 
                     <aside className="space-y-6">
-                        {lab.employees && lab.employees.length > 0 && (
-                            <div className="p-6 rounded-2xl bg-card border shadow-sm space-y-4">
-                                <h3 className="font-semibold text-lg">Lab Members</h3>
-                                <div className="space-y-4">
-                                    {lab.employees.map((emp) => emp.user ? (
-                                        <div key={emp.id} className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-secondary overflow-hidden shrink-0 flex items-center justify-center">
-                                                {emp.user.avatar_url ? (
-                                                    // eslint-disable-next-line @next/next/no-img-element
-                                                    <img src={emp.user.avatar_url} alt={emp.user.name} className="w-full h-full object-cover" />
-                                                ) : (
-                                                    <span className="font-semibold">{emp.user.name.charAt(0)}</span>
-                                                )}
-                                            </div>
-                                            <div>
-                                                <p className="font-medium text-sm leading-none">{emp.user.name}</p>
-                                                {emp.job_title && <p className="text-xs text-muted-foreground mt-1">{emp.job_title}</p>}
-                                            </div>
-                                        </div>
-                                    ) : null)}
-                                </div>
-                            </div>
-                        )}
                         <div className="p-6 rounded-2xl bg-card border shadow-sm space-y-6 flex flex-col items-center text-center">
                             <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl font-bold overflow-hidden">
                                 {lab.avatar_url ? (
@@ -232,12 +281,40 @@ export default function LabProfile() {
                                 <Button className="w-full gap-2">
                                     <Mail className="w-4 h-4" /> Message Lab
                                 </Button>
-                                {lab.links && lab.links.length > 0 && (
+                                {lab.latitude !== undefined && lab.longitude !== undefined && (
                                     <Button variant="outline" className="w-full gap-2" asChild>
-                                        <a href={lab.links[0].url} target="_blank" rel="noopener noreferrer">
-                                            <ExternalLink className="w-4 h-4" /> Visit Website
+                                        <a href={`https://www.google.com/maps/search/?api=1&query=${lab.latitude},${lab.longitude}`} target="_blank" rel="noopener noreferrer">
+                                            <MapPin className="w-4 h-4" /> View Map
                                         </a>
                                     </Button>
+                                )}
+                                {lab.links && lab.links.length > 0 && (
+                                    <div className="flex flex-col gap-2 w-full mt-3">
+                                        {lab.links.map((link, idx) => {
+                                            let Icon = Link2;
+                                            let label = "Visit Website";
+                                            let variant = "outline";
+
+                                            if (link.url.includes("instagram.com")) {
+                                                Icon = Instagram; label = "Instagram";
+                                            } else if (link.url.includes("facebook.com")) {
+                                                Icon = Facebook; label = "Facebook";
+                                            } else if (link.url.includes("linkedin.com")) {
+                                                Icon = Linkedin; label = "LinkedIn";
+                                            } else if (link.url.includes("wa.me")) {
+                                                Icon = MessageCircle; label = "WhatsApp";
+                                                variant = "secondary";
+                                            }
+
+                                            return (
+                                                <Button key={idx} variant={variant as any} className="w-full gap-2" asChild>
+                                                    <a href={link.url} target="_blank" rel="noopener noreferrer">
+                                                        <Icon className="w-4 h-4" /> {label}
+                                                    </a>
+                                                </Button>
+                                            );
+                                        })}
+                                    </div>
                                 )}
                             </div>
                         </div>

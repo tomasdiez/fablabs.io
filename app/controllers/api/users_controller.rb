@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::UsersController < Api::ApiController
-  before_action :doorkeeper_authorize!
-  before_action :authorize_superadmin!
+  before_action :doorkeeper_authorize!, except: [:show, :get_user]
+  before_action :authorize_superadmin!, except: [:show, :get_user]
 
   def create_user
     logger.info 'Creating user through API v2'
@@ -44,6 +44,14 @@ class Api::UsersController < Api::ApiController
   def get_user
     @user = User.friendly.find(params[:slug])
     render json: ApiUserSerializer.new(@user).serializable_hash
+  end
+
+  # GET /api/users/:slug
+  def show
+    @user = User.friendly.find(params[:slug])
+    render json: @user, serializer: UserProfileSerializer
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'Maker not found' }, status: :not_found
   end
 
   private

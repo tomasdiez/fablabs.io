@@ -91,7 +91,7 @@ class Lab < ApplicationRecord
   validates_format_of :email, :with => /\A(.+)@(.+)\z/
   validates_uniqueness_of :name, :slug, case_sensitive: false
 
-  Capabilities = %w(three_d_printing cnc_milling circuit_production laser precision_milling vinyl_cutting)
+  Capabilities = %w(three_d_printing cnc_milling circuit_production laser precision_milling vinyl_cutting ai blockchain iot drone_mapping gis community_engagement)
   bitmask :capabilities, as: Capabilities
 
   # unless Rails.env.test?

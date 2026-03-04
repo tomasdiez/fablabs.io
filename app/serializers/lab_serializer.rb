@@ -50,6 +50,8 @@ class LabSerializer < ActiveModel::Serializer
     # Only return url if there is an actual avatar (no default image needed in api)
     if object.avatar_uid.present?
       object.avatar.thumb('150x150#').url(host: 'https://www.fablabs.io')
+    else
+      "https://picsum.photos/seed/lab_avatar_#{object.id}/300/300"
     end
   end
 
@@ -57,6 +59,8 @@ class LabSerializer < ActiveModel::Serializer
     # Only return url if there is an actual header (no default image needed in api)
     if object.header.present?
       object.header.thumb("800x").url(host: 'https://www.fablabs.io')
+    else
+      "https://picsum.photos/seed/lab_header_#{object.id}/1200/400"
     end
   end
 
