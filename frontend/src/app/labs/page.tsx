@@ -231,24 +231,26 @@ function LabsPageContent() {
                             <NavigationControl position="bottom-right" />
                             {filteredNodes.map((node) => {
                                 let markerBg = "bg-primary";
-                                if (node.type === 'Lab') markerBg = "bg-blue-500";
-                                if (node.type === 'MakeWorks') markerBg = "bg-green-500";
-                                if (node.type === 'FabCity') markerBg = "bg-purple-600";
-                                if (node.type === 'DistributedDesign') markerBg = "bg-orange-500";
+                                if (node.type === 'Lab') markerBg = "bg-blue-500 z-50 w-8 h-8";
+                                if (node.type === 'MakeWorks') markerBg = "bg-green-500 w-6 h-6";
+                                if (node.type === 'FabCity') markerBg = "bg-purple-600 w-6 h-6";
+                                if (node.type === 'DistributedDesign') markerBg = "bg-orange-500 w-6 h-6";
 
                                 return node.location?.latitude && node.location?.longitude ? (
                                     <Marker
                                         key={node.id}
-                                        longitude={node.location.longitude}
-                                        latitude={node.location.latitude}
+                                        longitude={Number(node.location.longitude)}
+                                        latitude={Number(node.location.latitude)}
                                         anchor="bottom"
                                         onClick={(e) => {
                                             e.originalEvent.stopPropagation();
                                             // Future: Open popup
                                         }}
                                     >
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-lg cursor-pointer transform hover:scale-110 transition-transform text-white ${markerBg}`}>
-                                            <MapPin className="w-5 h-5" />
+                                        <div
+                                            className={`rounded-full flex items-center justify-center shadow-lg cursor-pointer transform hover:scale-110 transition-transform text-white ${markerBg}`}
+                                        >
+                                            <MapPin className="w-4 h-4" />
                                         </div>
                                     </Marker>
                                 ) : null;

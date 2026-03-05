@@ -1,0 +1,30 @@
+0 verbose cli /Users/tomasdiez/.nvm/versions/node/v25.7.0/bin/node /Users/tomasdiez/.nvm/versions/node/v25.7.0/bin/npm
+1 info using npm@11.10.1
+2 info using node@v25.7.0
+3 silly config load:file:/Users/tomasdiez/.nvm/versions/node/v25.7.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/tomasdiez/.gemini/antigravity/playground/infrared-eagle/telegram-bot/.npmrc
+5 silly config load:file:/Users/tomasdiez/.npmrc
+6 silly config load:file:/Users/tomasdiez/.nvm/versions/node/v25.7.0/etc/npmrc
+7 verbose title npm init
+8 verbose argv "init" "--yes"
+9 verbose logfile logs-max:10 dir:/Users/tomasdiez/Web/fablabs.io/.npm-local-cache/_logs/2026-03-05T10_18_35_303Z-
+10 verbose logfile /Users/tomasdiez/Web/fablabs.io/.npm-local-cache/_logs/2026-03-05T10_18_35_303Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly logfile done cleaning log files
+13 silly package data {
+13 silly package data   name: 'telegram-bot',
+13 silly package data   version: '1.0.0',
+13 silly package data   description: '',
+13 silly package data   main: 'index.js',
+13 silly package data   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+13 silly package data   keywords: [],
+13 silly package data   author: '',
+13 silly package data   license: 'ISC',
+13 silly package data   type: 'commonjs'
+13 silly package data }
+14 verbose cwd /Users/tomasdiez/.gemini/antigravity/playground/infrared-eagle/telegram-bot
+15 verbose os Darwin 25.2.0
+16 verbose node v25.7.0
+17 verbose npm  v11.10.1
+18 verbose exit 0
+19 info ok

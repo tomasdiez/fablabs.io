@@ -7,8 +7,8 @@
 6 silly config load:file:/Users/tomasdiez/.nvm/versions/node/v25.7.0/etc/npmrc
 7 verbose title npm run build
 8 verbose argv "run" "build"
-9 verbose logfile logs-max:10 dir:/Users/tomasdiez/Web/fablabs.io/.npm-local-cache/_logs/2026-03-05T06_45_59_474Z-
-10 verbose logfile /Users/tomasdiez/Web/fablabs.io/.npm-local-cache/_logs/2026-03-05T06_45_59_474Z-debug-0.log
+9 verbose logfile logs-max:10 dir:/Users/tomasdiez/Web/fablabs.io/.npm-local-cache/_logs/2026-03-05T10_44_45_160Z-
+10 verbose logfile /Users/tomasdiez/Web/fablabs.io/.npm-local-cache/_logs/2026-03-05T10_44_45_160Z-debug-0.log
 11 silly logfile start cleaning logs, removing 1 files
 12 silly logfile done cleaning log files
 13 verbose cwd /Users/tomasdiez/Web/fablabs.io/frontend

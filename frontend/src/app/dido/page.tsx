@@ -11,6 +11,7 @@ export default function DidoPage() {
     const [nodes, setNodes] = useState<OrchestrationNode[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const [selectedEducation, setSelectedEducation] = useState<string>("");
     const [selectedDesign, setSelectedDesign] = useState<string>("");
     const [selectedLab, setSelectedLab] = useState<string>("");
     const [selectedSupplier, setSelectedSupplier] = useState<string>("");
@@ -33,6 +34,14 @@ export default function DidoPage() {
     const labs = nodes.filter(n => n.type === 'Lab');
     const suppliers = nodes.filter(n => n.type === 'MakeWorks');
 
+    // Mock Educational Prerequisites (Learning Hub)
+    const educationalCourses = [
+        { id: "edu-fabacademy", name: "Fab Academy", description: "Diploma in Digital Fabrication" },
+        { id: "edu-fabricademy", name: "Fabricademy", description: "Textile and Technology Academy" },
+        { id: "edu-mdef", name: "MDEF", description: "Master in Design for Emergent Futures" },
+        { id: "edu-distributed", name: "Distributed Design", description: "Open Source Hardware Design" },
+    ];
+
     const handleTransactionSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSubmitting(true);
@@ -44,6 +53,7 @@ export default function DidoPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    educationId: selectedEducation,
                     designId: selectedDesign,
                     labId: selectedLab,
                     supplierId: selectedSupplier
@@ -98,11 +108,34 @@ export default function DidoPage() {
                             </div>
                         ) : (
                             <>
-                                {/* Step 1: Design Selection */}
+                                {/* Step 1: Education Selection */}
+                                <div className="space-y-3">
+                                    <label className="block text-sm font-semibold text-foreground flex items-center gap-2">
+                                        <svg className="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                                        </svg>
+                                        1. Select Educational Prerequisite (Learning Hub)
+                                    </label>
+                                    <select
+                                        required
+                                        className="w-full bg-background border rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-shadow"
+                                        value={selectedEducation}
+                                        onChange={e => setSelectedEducation(e.target.value)}
+                                    >
+                                        <option value="" disabled>-- Choose a prerequisite program --</option>
+                                        {educationalCourses.map(c => (
+                                            <option key={c.id} value={c.id}>{c.name} - {c.description}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Step 2: Design Selection */}
                                 <div className="space-y-3">
                                     <label className="block text-sm font-semibold text-foreground flex items-center gap-2">
                                         <UploadCloud className="w-4 h-4 text-orange-500" />
-                                        1. Select Global Design Blueprint (Distributed Design)
+                                        2. Select Global Design Blueprint (Distributed Design)
                                     </label>
                                     <select
                                         required
@@ -117,11 +150,11 @@ export default function DidoPage() {
                                     </select>
                                 </div>
 
-                                {/* Step 2: Fabrication Hub Selection */}
+                                {/* Step 3: Fabrication Hub Selection */}
                                 <div className="space-y-3">
                                     <label className="block text-sm font-semibold text-foreground flex items-center gap-2">
                                         <MapPin className="w-4 h-4 text-blue-500" />
-                                        2. Select Local Manufacturing Hub (Fab Lab)
+                                        3. Select Local Manufacturing Hub (Fab Lab)
                                     </label>
                                     <select
                                         required
@@ -136,11 +169,11 @@ export default function DidoPage() {
                                     </select>
                                 </div>
 
-                                {/* Step 3: Material Source Selection */}
+                                {/* Step 4: Material Source Selection */}
                                 <div className="space-y-3 mb-8">
                                     <label className="block text-sm font-semibold text-foreground flex items-center gap-2">
                                         <Box className="w-4 h-4 text-green-500" />
-                                        3. Select Local Material Source (Make Works)
+                                        4. Select Local Material Source (Make Works)
                                     </label>
                                     <select
                                         required
@@ -173,7 +206,7 @@ export default function DidoPage() {
                                     ) : (
                                         <>
                                             <Send className="w-5 h-5" />
-                                            Log to Fab City OS / Interfacer
+                                            Generate Digital Product Passport
                                         </>
                                     )}
                                 </Button>
@@ -187,44 +220,25 @@ export default function DidoPage() {
                             <div className="flex flex-col items-center justify-center text-center space-y-4">
                                 <CheckCircle2 className="w-16 h-16 text-emerald-500" />
                                 <div>
-                                    <h3 className="text-2xl font-bold text-foreground mb-2">Transaction Committed!</h3>
-                                    <p className="text-sm text-muted-foreground w-full max-w-md">
-                                        This DIDO physical instantiation has been successfully logged to the Interfacer OS distributed ledger mock layer.
+                                    <h3 className="text-2xl font-bold text-foreground mb-2">Digital Product Passport Generated!</h3>
+                                    <p className="text-sm text-muted-foreground w-full max-w-md mx-auto">
+                                        This DIDO physical instantiation has been successfully compiled and logged to the Interfacer OS distributed ledger.
                                     </p>
                                 </div>
-                                <div className="w-full bg-card border rounded-xl p-6 text-left space-y-4 shadow-sm mt-4">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div>
-                                            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">Transaction Hash</span>
-                                            <code className="text-sm bg-secondary/50 px-2 py-1 rounded text-primary break-all">{receipt.transactionHash}</code>
-                                        </div>
-                                        <div>
-                                            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">Network</span>
-                                            <span className="text-sm font-medium">{receipt.network}</span>
-                                        </div>
+                                <div className="w-full bg-secondary/80 border rounded-xl p-6 text-left shadow-inner mt-4 overflow-x-auto">
+                                    <div className="flex items-center justify-between mb-4 border-b pb-2">
+                                        <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">JSON Payload</span>
+                                        <span className="text-xs font-mono text-emerald-600 bg-emerald-500/10 px-2 py-1 rounded">✔ Verified</span>
                                     </div>
-                                    <div className="pt-4 border-t space-y-2">
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-muted-foreground">Blueprint ID:</span>
-                                            <span className="font-mono">{receipt.details.design_blueprint}</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-muted-foreground">Manufacturing Node:</span>
-                                            <span className="font-mono">{receipt.details.manufacturing_node}</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-muted-foreground">Material Source:</span>
-                                            <span className="font-mono">{receipt.details.material_source}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between text-sm pt-2">
-                                            <span className="text-muted-foreground">Timestamp:</span>
-                                            <span className="text-muted-foreground font-medium">{new Date(receipt.timestamp).toLocaleString()}</span>
-                                        </div>
-                                    </div>
+                                    <pre className="text-xs md:text-sm font-mono text-primary/90">
+                                        <code>
+                                            {JSON.stringify(receipt, null, 2)}
+                                        </code>
+                                    </pre>
                                 </div>
 
-                                <Button variant="outline" className="mt-6" onClick={() => setReceipt(null)}>
-                                    Record Another Execution
+                                <Button variant="default" className="mt-6" onClick={() => setReceipt(null)}>
+                                    Execute Another Project
                                 </Button>
                             </div>
                         </div>

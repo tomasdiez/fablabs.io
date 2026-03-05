@@ -18,6 +18,56 @@ export async function GET() {
             country_code: "ES"
         },
         {
+            id: "lab-london",
+            name: "Fab Lab London",
+            slug: "fab-lab-london",
+            blurb: "A digital fabrication workspace in the heart of London.",
+            latitude: 51.5074,
+            longitude: -0.1278,
+            city: "London",
+            country_code: "GB"
+        },
+        {
+            id: "lab-berlin",
+            name: "Fab Lab Berlin",
+            slug: "fab-lab-berlin",
+            blurb: "Empowering makers in Germany.",
+            latitude: 52.5200,
+            longitude: 13.4050,
+            city: "Berlin",
+            country_code: "DE"
+        },
+        {
+            id: "lab-amsterdam",
+            name: "Fab Lab Amsterdam",
+            slug: "fab-lab-amsterdam",
+            blurb: "Located at the Waag Society.",
+            latitude: 52.3676,
+            longitude: 4.9041,
+            city: "Amsterdam",
+            country_code: "NL"
+        },
+        {
+            id: "lab-paris",
+            name: "Fab Lab Paris",
+            slug: "fab-lab-paris",
+            blurb: "Digital manufacturing in France.",
+            latitude: 48.8566,
+            longitude: 2.3522,
+            city: "Paris",
+            country_code: "FR"
+        },
+        {
+            id: "lab-milano",
+            name: "Fab Lab Milano",
+            slug: "fab-lab-milano",
+            blurb: "Supporting the Italian design community.",
+            latitude: 45.4642,
+            longitude: 9.1900,
+            city: "Milano",
+            country_code: "IT"
+        },
+        {
             id: "lab-2",
             name: "Fab Lab Oulu",
             slug: "fab-lab-oulu",

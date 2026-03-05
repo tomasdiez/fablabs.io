@@ -29,18 +29,25 @@ export default function Navigation() {
         <header className="fixed top-0 w-full z-50 border-b bg-background/80 backdrop-blur-md">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-6">
-                    <Link href="/" className="text-xl font-bold tracking-tighter shrink-0">
-                        fablabs<span className="text-primary">.io</span>
+                    <Link href="/" className="text-xl font-bold tracking-tighter shrink-0 flex items-center gap-2">
+                        <div className="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-black text-sm">FC</div>
+                        Fab City<span className="text-primary"> OS</span>
                     </Link>
                     <nav className="hidden md:flex gap-6 text-sm font-medium items-center">
+                        <Link href="/" className="hover:text-primary transition-colors py-2">
+                            Vision
+                        </Link>
+                        <Link href="/learning" className="hover:text-primary transition-colors py-2">
+                            Learning
+                        </Link>
+                        <Link href="/hardware" className="hover:text-primary transition-colors py-2">
+                            Hardware
+                        </Link>
                         <Link href="/labs" className="hover:text-primary transition-colors py-2">
                             Labs
                         </Link>
-                        <Link href="/activity" className="hover:text-primary transition-colors py-2">
-                            Feed
-                        </Link>
-                        <Link href="/tools" className="hover:text-primary transition-colors py-2">
-                            Tools
+                        <Link href="/manufacturing" className="hover:text-primary transition-colors py-2">
+                            Manufacturing
                         </Link>
 
                         {/* Interactive Ecosystem Dropdown */}
@@ -121,7 +128,9 @@ export default function Navigation() {
                             <Button variant="ghost" size="sm" onClick={handleSignIn} className="hidden sm:flex">
                                 Sign In
                             </Button>
-                            <Button size="sm" onClick={handleSignIn}>Join Network</Button>
+                            <Link href="/dido">
+                                <Button size="sm" className="gap-2 font-bold shadow-sm">Start DIDO Workflow</Button>
+                            </Link>
                         </>
                     )}
                 </div>

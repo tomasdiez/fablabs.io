@@ -5,9 +5,9 @@ export async function POST(req: Request) {
         const body = await req.json();
 
         // Mock validation of the DIDO transaction
-        if (!body.designId || !body.labId || !body.supplierId) {
+        if (!body.educationId || !body.designId || !body.labId || !body.supplierId) {
             return NextResponse.json(
-                { error: 'Missing required DIDO transaction parameters (designId, labId, supplierId)' },
+                { error: 'Missing required DIDO transaction parameters (educationId, designId, labId, supplierId)' },
                 { status: 400 }
             );
         }
@@ -15,13 +15,14 @@ export async function POST(req: Request) {
         // Simulate ledger recording latency
         await new Promise(resolve => setTimeout(resolve, 800));
 
-        // Generate mock transaction receipt
+        // Generate mock transaction receipt (Digital Product Passport Payload)
         const receipt = {
             transactionHash: `0x${Math.random().toString(16).slice(2, 42)}`,
             timestamp: new Date().toISOString(),
             status: 'COMMITTED',
             network: 'FabCity OS (Interfacer Mock Layer)',
-            details: {
+            dido_product_passport: {
+                prerequisite_education: body.educationId,
                 design_blueprint: body.designId,
                 manufacturing_node: body.labId,
                 material_source: body.supplierId
