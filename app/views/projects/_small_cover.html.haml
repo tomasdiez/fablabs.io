@@ -1,9 +1,0 @@
-- cover = project.project_cover
-- if cover
-  .project-title{ style: "background-image: url('#{cover.thumb('200x').url}" }
-    = link_to project do
-      %span.project-title-span= truncate project.title, length: 25
-- else
-  .project-title
-    = link_to project do
-      %span.project-title-span= truncate project.title, length: 25

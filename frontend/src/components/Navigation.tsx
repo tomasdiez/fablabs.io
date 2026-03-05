@@ -3,12 +3,16 @@
 import Link from "next/link";
 import { Search, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useSession, signIn, signOut } from "next-auth/react";
+// Removed next-auth integration
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Navigation() {
-    const { data: session } = useSession();
+    // Mock session for unified dashboard demonstration
+    const session: any = { user: { name: "Tomas Diez", image: "https://i.pravatar.cc/150?u=tomas" } };
+
+    const handleSignIn = () => alert("Authentication will be handled by external SSO.");
+    const handleSignOut = () => alert("Logout will be handled by external SSO.");
     const [searchQuery, setSearchQuery] = useState("");
     const router = useRouter();
 
@@ -105,7 +109,7 @@ export default function Navigation() {
                                 </Link>
                                 <div className="h-px bg-border my-1" />
                                 <button
-                                    onClick={() => signOut()}
+                                    onClick={handleSignOut}
                                     className="px-3 py-2 hover:bg-destructive/10 hover:text-destructive rounded-lg text-sm transition-colors text-left text-muted-foreground"
                                 >
                                     Log out
@@ -114,10 +118,10 @@ export default function Navigation() {
                         </div>
                     ) : (
                         <>
-                            <Button variant="ghost" size="sm" onClick={() => signIn("fablabs")} className="hidden sm:flex">
+                            <Button variant="ghost" size="sm" onClick={handleSignIn} className="hidden sm:flex">
                                 Sign In
                             </Button>
-                            <Button size="sm" onClick={() => signIn("fablabs")}>Join Network</Button>
+                            <Button size="sm" onClick={handleSignIn}>Join Network</Button>
                         </>
                     )}
                 </div>

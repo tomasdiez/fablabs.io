@@ -22,7 +22,8 @@ import {
     BookOpen
 } from "lucide-react";
 import { format } from "date-fns";
-import { Gitlab } from "lucide-react"; // Custom SVG wrapper if Lucide doesn't have it natively, but Lucide has Gitlab.
+import { Gitlab } from "lucide-react";
+import { GenericUser, GenericLab } from "@/types";
 
 // Extracted Domain Parser logic for External Repositories
 function getDomainIcon(url: string) {
@@ -55,20 +56,47 @@ const PLATFORM_ICONS: Record<string, React.ReactNode> = {
     web: <ExternalLink className="w-4 h-4" />
 };
 
+// Temporary mock user fetcher mimicking an external unified API
+async function fetchMockUser(id: string): Promise<any> {
+    return {
+        id: id,
+        name: "Tomas Diez",
+        username: "tomasdiez",
+        avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400",
+        bio: "Bringing manufacturing back to cities. Fab City Global Initiative.",
+        city: "Barcelona",
+        country_code: "ES",
+        created_at: "2010-05-12T00:00:00Z",
+        badges: ["fab_academy", "bootcamp", "global_event"],
+        links: [
+            { id: "1", url: "https://github.com/tomasdiez" },
+            { id: "2", url: "https://wikifactory.com/@tomasdiez" }
+        ],
+        social_links: {
+            "twitter": "https://twitter.com/tomasdiez",
+            "linkedin": "https://linkedin.com/in/tomasdiez",
+            "web": "https://tomasdiez.com"
+        },
+        labs: [
+            {
+                id: 1,
+                name: "Fab Lab Barcelona",
+                slug: "fab-lab-barcelona",
+                avatar_url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400",
+                city: "Barcelona",
+                country_code: "ES"
+            }
+        ]
+    };
+}
+
 export default async function MakerProfilePage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = await params;
-    // 1. Fetch data from our new Rails endpoint
-    const res = await fetch(`http://127.0.0.1:3001/api/users/${resolvedParams.id}`, { cache: "no-store" });
 
-    if (!res.ok) {
-        if (res.status === 404) return notFound();
-        throw new Error('Failed to fetch maker profile');
-    }
+    // Simulate fetching from unified external API
+    const user = await fetchMockUser(resolvedParams.id);
 
-    // ActiveModelSerializer root node elimination isn't guaranteed depending on setup.
-    // We'll safely destructure it.
-    const rootData = await res.json();
-    const user = rootData.user ? rootData.user : rootData;
+    if (!user) return notFound();
 
     const joinDate = user.created_at ? format(new Date(user.created_at), 'MMMM yyyy') : 'Unknown';
 

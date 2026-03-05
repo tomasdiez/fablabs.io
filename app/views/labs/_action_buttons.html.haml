@@ -1,7 +1,0 @@
-%ul.button-group.lab-actions.side-nav
-  %li
-    - if current_user
-      - if current_user.employed_by? @lab
-        You work here
-      - else
-        = link_to "I work here", new_lab_employee_path(@lab), class: ' small'

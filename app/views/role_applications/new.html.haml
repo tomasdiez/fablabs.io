@@ -1,6 +1,0 @@
-.row
-  .col-lg-12
-    = title "Apply to become an admin of #{@lab}"
-    = simple_form_for [@lab,@role_application] do |f|
-      = f.input :description
-      = f.submit class: 'button button-primary'

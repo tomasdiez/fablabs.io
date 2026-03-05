@@ -1,8 +1,0 @@
-/* TEAM */
-Developer: John Rees
-Site: http://johnre.es
-Twitter: @john_rees
-
-Developer: Silvia Puglisi
-Site: http://nopressure.co.uk
-Twitter: @nopressure

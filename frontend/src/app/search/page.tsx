@@ -44,66 +44,31 @@ export default function SearchPage() {
         const runSearch = async () => {
             setIsLoading(true);
             try {
-                const res = await fetch(`http://127.0.0.1:3001/api/search?q=${encodeURIComponent(debouncedQuery)}`);
-                if (!res.ok) throw new Error("Search failed");
-                const data = await res.json();
+                // Mimicking delay from future unified federated search API
+                await new Promise(resolve => setTimeout(resolve, 600));
 
-                const aggregated: SearchResult[] = [];
-
-                if (data.labs && Array.isArray(data.labs.labs ? data.labs.labs : data.labs)) {
-                    const labsArray = data.labs.labs || data.labs;
-                    labsArray.forEach((item: any) => aggregated.push({
-                        id: `l-${item.id}`,
+                const aggregated: SearchResult[] = [
+                    {
+                        id: `l-mock1`,
                         type: "Lab",
-                        title: item.name,
-                        subtitle: `${item.city || 'Unknown'}, ${item.country_code || 'Unspecified'}`,
+                        title: "Mock Lab Alpha",
+                        subtitle: "Berlin, DE",
                         icon: <MapPin className="w-5 h-5" />,
-                        url: `/labs/${item.slug}`,
-                        image_url: item.avatar_url
-                    }));
-                }
-
-                if (data.users && Array.isArray(data.users.users ? data.users.users : data.users)) {
-                    const usersArray = data.users.users || data.users;
-                    usersArray.forEach((item: any) => aggregated.push({
-                        id: `u-${item.id}`,
+                        url: `/labs/mock-alpha`
+                    },
+                    {
+                        id: `u-mock1`,
                         type: "Maker",
-                        title: item.name,
-                        subtitle: `@${item.username}`,
+                        title: "Mock Maker",
+                        subtitle: `@mockmaker`,
                         icon: <User className="w-5 h-5" />,
-                        url: `/users/${item.slug || item.id}`,
-                        image_url: item.avatar_url
-                    }));
-                }
+                        url: `/users/mock-user`
+                    }
+                ];
 
-                if (data.projects && Array.isArray(data.projects)) {
-                    data.projects.forEach((item: any) => aggregated.push({
-                        id: `p-${item.id}`,
-                        type: "Project",
-                        title: item.title,
-                        subtitle: "Project details pending",
-                        icon: <Settings className="w-5 h-5" />,
-                        url: `/projects/${item.slug || item.id}`,
-                        image_url: item.featured_image_url
-                    }));
-                }
-
-                if (data.machines && Array.isArray(data.machines.machines ? data.machines.machines : data.machines)) {
-                    const machinesArray = data.machines.machines || data.machines;
-                    machinesArray.forEach((item: any) => aggregated.push({
-                        id: `m-${item.id}`,
-                        type: "Machine",
-                        title: item.name,
-                        subtitle: item.description?.substring(0, 50) + "..." || "No description",
-                        icon: <Settings className="w-5 h-5" />,
-                        url: `/machines/${item.slug || item.id}`,
-                        image_url: item.image_url
-                    }));
-                }
-
-                setResults(aggregated);
+                setResults(aggregated.filter(r => r.title.toLowerCase().includes(debouncedQuery.toLowerCase()) || r.type.toLowerCase().includes(debouncedQuery.toLowerCase())));
             } catch (err) {
-                console.error("Failed to execute search query.", err);
+                console.error("Failed to execute federated search query.", err);
                 setResults([]);
             } finally {
                 setIsLoading(false);

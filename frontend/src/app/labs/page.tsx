@@ -5,48 +5,58 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Search, Filter } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signIn, signOut } from "next-auth/react";
+// Removed next-auth integration
 import Map, { Marker, NavigationControl } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 
-interface Lab {
-    id: string;
-    name: string;
-    slug: string;
-    description: string;
-    city: string;
-    country_code: string;
-    avatar_url?: string;
-    latitude?: number | null;
-    longitude?: number | null;
-}
+import { UnifiedApiClient } from "@/services/apiClient";
+import { OrchestrationNode } from "@/types";
 
 import dynamic from "next/dynamic";
 
 function LabsPageContent() {
-    const { data: session } = useSession();
-    const [labs, setLabs] = useState<Lab[]>([]);
+    // Mock session for unified dashboard pivot demonstration
+    const session: any = { user: { name: "Tomas Diez", image: "https://i.pravatar.cc/150?u=tomas" } };
+
+    const handleSignIn = () => alert("Authentication will be handled by external SSO.");
+    const handleSignOut = () => alert("Logout will be handled by external SSO.");
+
+    // Bioregional Orchestration State
+    const [nodes, setNodes] = useState<OrchestrationNode[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
+
+    // Layer Toggles
+    const [showLabs, setShowLabs] = useState(true);
+    const [showMakeWorks, setShowMakeWorks] = useState(true);
+    const [showFabCity, setShowFabCity] = useState(true);
+    const [showDistributedDesign, setShowDistributedDesign] = useState(true);
 
     useEffect(() => {
-        const fetchLabs = async () => {
-            try {
-                const response = await fetch("http://localhost:3001/api/labs");
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                const data = await response.json();
-                setLabs(data);
-            } catch (error) {
-                console.error("Failed to fetch labs:", error);
-                // Optionally set some fallback state or show an error
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchLabs();
+        async function loadEcosystem() {
+            setLoading(true);
+            const data = await UnifiedApiClient.fetchOrchestrationNodes();
+            setNodes(data);
+            setLoading(false);
+        }
+        loadEcosystem();
     }, []);
+
+    // Filter pipeline
+    const filteredNodes = nodes.filter(node => {
+        if (!showLabs && node.type === 'Lab') return false;
+        if (!showMakeWorks && node.type === 'MakeWorks') return false;
+        if (!showFabCity && node.type === 'FabCity') return false;
+        if (!showDistributedDesign && node.type === 'DistributedDesign') return false;
+
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            return node.name.toLowerCase().includes(query) ||
+                node.description?.toLowerCase().includes(query) ||
+                node.location.city?.toLowerCase().includes(query);
+        }
+        return true;
+    });
 
     return (
         <div className="flex h-screen bg-background">
@@ -60,7 +70,7 @@ function LabsPageContent() {
                                 <div className="text-right">
                                     <p className="text-sm font-medium leading-none">{session.user.name}</p>
                                     <button
-                                        onClick={() => signOut()}
+                                        onClick={handleSignOut}
                                         className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                                     >
                                         Log out
@@ -75,7 +85,7 @@ function LabsPageContent() {
                                 )}
                             </div>
                         ) : (
-                            <Button variant="default" size="sm" onClick={() => signIn("fablabs")}>
+                            <Button variant="default" size="sm" onClick={handleSignIn}>
                                 Log in
                             </Button>
                         )}
@@ -92,6 +102,49 @@ function LabsPageContent() {
                         <Button variant="outline" size="icon">
                             <Filter className="h-4 w-4" />
                         </Button>
+                    </div>
+                    {/* Orchestration Layer Toggles */}
+                    <div className="flex flex-col gap-2 pt-2">
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={showLabs}
+                                onChange={(e) => setShowLabs(e.target.checked)}
+                                className="rounded text-blue-500 focus:ring-blue-500"
+                            />
+                            <span className="font-medium">Manufacturing Hubs (Fab Labs)</span>
+                            <div className="ml-auto w-3 h-3 rounded-full bg-blue-500" />
+                        </label>
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={showMakeWorks}
+                                onChange={(e) => setShowMakeWorks(e.target.checked)}
+                                className="rounded text-green-500 focus:ring-green-500"
+                            />
+                            <span className="font-medium">Material Suppliers (Make Works)</span>
+                            <div className="ml-auto w-3 h-3 rounded-full bg-green-500" />
+                        </label>
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={showFabCity}
+                                onChange={(e) => setShowFabCity(e.target.checked)}
+                                className="rounded text-purple-600 focus:ring-purple-600"
+                            />
+                            <span className="font-medium">Fab City Network</span>
+                            <div className="ml-auto w-3 h-3 rounded-full bg-purple-600" />
+                        </label>
+                        <label className="flex items-center gap-2 text-sm cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={showDistributedDesign}
+                                onChange={(e) => setShowDistributedDesign(e.target.checked)}
+                                className="rounded text-orange-500 focus:ring-orange-500"
+                            />
+                            <span className="font-medium">Design Talent (Distributed Design)</span>
+                            <div className="ml-auto w-3 h-3 rounded-full bg-orange-500" />
+                        </label>
                     </div>
                 </div>
 
@@ -110,72 +163,99 @@ function LabsPageContent() {
                             ))}
                         </div>
                     ) : (
-                        labs.map((lab) => (
-                            <Link key={lab.id} href={`/labs/${lab.slug}`}>
-                                <div className="group flex gap-4 p-4 border rounded-xl hover:border-primary hover:shadow-md transition-all cursor-pointer bg-card">
-                                    <div className="w-16 h-16 bg-primary/10 rounded-lg shrink-0 flex items-center justify-center text-primary overflow-hidden">
-                                        {lab.avatar_url ? (
-                                            <Image
-                                                src={lab.avatar_url}
-                                                alt={lab.name}
-                                                width={64}
-                                                height={64}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <MapPin className="h-6 w-6" />
-                                        )}
+                        filteredNodes.map((node) => {
+                            // Determine visual styling based on network type
+                            let borderHover = "hover:border-primary";
+                            let iconBg = "bg-primary/10 text-primary";
+                            let titleHover = "group-hover:text-primary";
+
+                            if (node.type === 'Lab') { borderHover = "hover:border-blue-500"; iconBg = "bg-blue-500/10 text-blue-500"; titleHover = "group-hover:text-blue-500"; }
+                            if (node.type === 'MakeWorks') { borderHover = "hover:border-green-500"; iconBg = "bg-green-500/10 text-green-500"; titleHover = "group-hover:text-green-500"; }
+                            if (node.type === 'FabCity') { borderHover = "hover:border-purple-600"; iconBg = "bg-purple-600/10 text-purple-600"; titleHover = "group-hover:text-purple-600"; }
+                            if (node.type === 'DistributedDesign') { borderHover = "hover:border-orange-500"; iconBg = "bg-orange-500/10 text-orange-500"; titleHover = "group-hover:text-orange-500"; }
+
+                            return (
+                                <Link key={node.id} href={node.url}>
+                                    <div className={`group flex gap-4 p-4 border rounded-xl hover:shadow-md transition-all cursor-pointer bg-card ${borderHover}`}>
+                                        <div className={`w-16 h-16 rounded-lg shrink-0 flex items-center justify-center overflow-hidden ${iconBg}`}>
+                                            {node.avatar_url ? (
+                                                <Image
+                                                    src={node.avatar_url}
+                                                    alt={node.name}
+                                                    width={64}
+                                                    height={64}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <MapPin className="h-6 w-6" />
+                                            )}
+                                        </div>
+                                        <div>
+                                            <h3 className={`font-semibold transition-colors ${titleHover}`}>
+                                                {node.name}
+                                            </h3>
+                                            <p className="text-sm text-muted-foreground">
+                                                {[node.location.city, node.location.country_code].filter(Boolean).join(", ") || "Location unknown"}
+                                            </p>
+                                            <p className="text-sm mt-2 line-clamp-2">{node.description || "No description provided."}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h3 className="font-semibold group-hover:text-primary transition-colors">{lab.name}</h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {[lab.city, lab.country_code].filter(Boolean).join(", ") || "Location unknown"}
-                                        </p>
-                                        <p className="text-sm mt-2 line-clamp-2">{lab.description || "No description provided."}</p>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))
+                                </Link>
+                            );
+                        })
                     )}
                 </div>
             </div>
 
             {/* Interactive Map Area */}
-            <div className="flex-1 relative pt-16 bg-secondary/30">
-                <div className="absolute inset-0 pt-16 flex items-center justify-center pointer-events-none">
-                    {loading ? (
-                        <div className="flex flex-col items-center text-muted-foreground">
-                            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
-                            <p>Loading global map...</p>
-                        </div>
-                    ) : (
+            <div className="flex-1 relative bg-secondary/30 flex flex-col pt-16">
+                {loading ? (
+                    <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground z-10">
+                        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+                        <p>Loading global map...</p>
+                    </div>
+                ) : (
+                    <div className="flex-1 relative z-0 w-full h-full">
                         <Map
                             initialViewState={{
-                                longitude: 0,
-                                latitude: 20,
-                                zoom: 1.5
+                                longitude: 10,
+                                latitude: 45,
+                                zoom: 3
                             }}
+                            scrollZoom={true}
+                            dragPan={true}
+                            dragRotate={true}
                             mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
-                            style={{ width: "100%", height: "100%" }}
+                            style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
                         >
                             <NavigationControl position="bottom-right" />
-                            {labs.map((lab) => (
-                                lab.latitude && lab.longitude ? (
+                            {filteredNodes.map((node) => {
+                                let markerBg = "bg-primary";
+                                if (node.type === 'Lab') markerBg = "bg-blue-500";
+                                if (node.type === 'MakeWorks') markerBg = "bg-green-500";
+                                if (node.type === 'FabCity') markerBg = "bg-purple-600";
+                                if (node.type === 'DistributedDesign') markerBg = "bg-orange-500";
+
+                                return node.location?.latitude && node.location?.longitude ? (
                                     <Marker
-                                        key={lab.id}
-                                        longitude={lab.longitude}
-                                        latitude={lab.latitude}
+                                        key={node.id}
+                                        longitude={node.location.longitude}
+                                        latitude={node.location.latitude}
                                         anchor="bottom"
+                                        onClick={(e) => {
+                                            e.originalEvent.stopPropagation();
+                                            // Future: Open popup
+                                        }}
                                     >
-                                        <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-lg cursor-pointer transform hover:scale-110 transition-transform">
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-lg cursor-pointer transform hover:scale-110 transition-transform text-white ${markerBg}`}>
                                             <MapPin className="w-5 h-5" />
                                         </div>
                                     </Marker>
-                                ) : null
-                            ))}
+                                ) : null;
+                            })}
                         </Map>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     );

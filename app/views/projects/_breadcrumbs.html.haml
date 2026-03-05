@@ -1,9 +1,0 @@
-%ol.breadcrumb
-  %li.breadcrumb-item
-    = link_to Project.to_s.pluralize, projects_path
-  - if @project and @project.lab
-    %li.breadcrumb-item
-      = link_to @project.lab, "/projects/lab/#{@project.lab.slug}"
-  - if @project
-    %li.breadcrumb-item
-      = link_to @project.title, project_path(@project)

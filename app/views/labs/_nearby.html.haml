@@ -1,9 +1,0 @@
-- if nearby_labs
-  - nearby_labs.each do |lab|
-    .list-item-small-wrapper
-      = link_to lab, class: 'list-item-small-image' do
-        = image_tag lab.avatar.thumb("90x90#").url
-
-      .list-item-small-content
-        = link_to lab, lab, class: 'text-medium'
-        .text-small= "#{lab.distance.ceil}km away"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+// Removed next-auth integration
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Save, User, Link as LinkIcon, Camera, AlertCircle, Plus, Trash2 } from "lucide-react";
@@ -23,7 +23,9 @@ interface IncludedLink {
 }
 
 export default function SettingsPage() {
-    const { data: session, status } = useSession();
+    // Mock session for UI layout demonstration
+    const status: string = "authenticated";
+    const session: any = { accessToken: "mock-token" };
     const router = useRouter();
 
     const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -52,16 +54,18 @@ export default function SettingsPage() {
 
     const fetchProfile = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/api/profile`, {
-                headers: {
-                    "Authorization": `Bearer ${session?.accessToken}`,
-                    "Content-Type": "application/json"
-                }
-            });
-            if (!res.ok) throw new Error("Failed to load profile settings.");
+            await new Promise(resolve => setTimeout(resolve, 500));
 
-            const resultJson = await res.json();
-            const updatedUser = resultJson;
+            const updatedUser = {
+                id: 1,
+                first_name: "Tomas",
+                last_name: "Diez",
+                bio: "Unified Dashboard Settings Mock",
+                city: "Barcelona",
+                country_code: "ES",
+                avatar_url: "https://i.pravatar.cc/150?u=tomas",
+                links: []
+            };
 
             setProfile(updatedUser);
             setFirstName(updatedUser.first_name || "");
@@ -94,55 +98,13 @@ export default function SettingsPage() {
         setSuccessMsg(null);
 
         try {
-            let body;
-            let headers: any = {
-                "Authorization": `Bearer ${session?.accessToken}`
-            };
+            // Mocking a successful mutation to future external service
+            await new Promise((resolve) => setTimeout(resolve, 800));
 
-            if (avatarFile) {
-                const formData = new FormData();
-                formData.append('user[first_name]', firstName);
-                formData.append('user[last_name]', lastName);
-                formData.append('user[bio]', bio);
-                formData.append('user[city]', city);
-                formData.append('user[country_code]', countryCode);
-                formData.append('user[avatar]', avatarFile);
-                links.forEach((link, idx) => {
-                    if (link.id) formData.append(`user[links_attributes][${idx}][id]`, link.id);
-                    if (link.url) formData.append(`user[links_attributes][${idx}][url]`, link.url);
-                    if (link._destroy) formData.append(`user[links_attributes][${idx}][_destroy]`, '1');
-                });
-                body = formData;
-            } else {
-                body = JSON.stringify({
-                    user: {
-                        first_name: firstName,
-                        last_name: lastName,
-                        bio,
-                        city,
-                        country_code: countryCode,
-                        links_attributes: links
-                    }
-                });
-                headers["Content-Type"] = "application/json";
-            }
-
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}/api/profile`, {
-                method: "PUT",
-                headers,
-                body
-            });
-
-            if (!res.ok) {
-                const errJson = await res.json();
-                throw new Error(errJson.error || "Failed to update profile.");
-            }
-
-            setSuccessMsg("Profile successfully updated.");
-            setAvatarFile(null); // Reset file selection after successful upload
-            fetchProfile(); // Refresh to get clean IDs for newly created links
+            setSuccessMsg("Settings saved successfully to the unified network.");
+            fetchProfile(); // Refresh 
         } catch (err: any) {
-            setError(err.message);
+            setError(err.message || "Failed to save settings.");
         } finally {
             setSaving(false);
         }

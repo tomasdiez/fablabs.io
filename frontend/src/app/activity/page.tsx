@@ -34,10 +34,27 @@ export default function ActivityFeedPage() {
     useEffect(() => {
         async function fetchActivities() {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/activities`);
-                if (!res.ok) throw new Error("Failed to fetch activity feed");
-                const json = await res.json();
-                setActivities(json.data || []);
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const mockActivities: ActivityRecord[] = [
+                    {
+                        id: "1", type: "activity",
+                        attributes: {
+                            action: "joined", created_at: new Date().toISOString(), trackable_type: "User", trackable_id: 1,
+                            actor: { id: 1, name: "Tomas Diez", slug: "tomasdiez" },
+                            trackable: { id: 1, type: "User", name: "Tomas Diez", slug: "tomasdiez" }
+                        }
+                    },
+                    {
+                        id: "2", type: "activity",
+                        attributes: {
+                            action: "created", created_at: new Date(Date.now() - 3600000).toISOString(), trackable_type: "Lab", trackable_id: 2,
+                            actor: { id: 1, name: "Admin", slug: "admin" },
+                            trackable: { id: 2, type: "Lab", name: "Global Fab Lab", slug: "global-fab-lab" }
+                        }
+                    }
+                ];
+                setActivities(mockActivities);
             } catch (err: any) {
                 setError(err.message);
             } finally {

@@ -94,12 +94,33 @@ export default function LabProfile() {
     useEffect(() => {
         const fetchLab = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/api/labs/${slug}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch lab");
-                }
-                const data = await response.json();
-                setLab(data);
+                // Mock external API loading
+                await new Promise(resolve => setTimeout(resolve, 600));
+
+                const mockLab: Lab = {
+                    id: "1",
+                    name: "Global Mock Lab",
+                    slug: slug,
+                    blurb: "A demonstration of the unified dashboard.",
+                    description: "This is a placeholder lab profile fetched from our generic mocked pipeline.",
+                    city: "Barcelona",
+                    country_code: "ES",
+                    latitude: 41.3962,
+                    longitude: 2.1947,
+                    email: "info@mocklab.com",
+                    phone: "+34 123 456 789",
+                    avatar_url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400",
+                    header_url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200",
+                    capabilities: ["three_d_printing", "laser"],
+                    activity_status: "Active",
+                    links: [],
+                    employees: [],
+                    machines: [],
+                    projects: [],
+                    events: []
+                };
+
+                setLab(mockLab);
             } catch (error) {
                 console.error("Failed to load lab profile:", error);
             }

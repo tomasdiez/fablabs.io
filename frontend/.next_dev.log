@@ -1,0 +1,90 @@
+
+> frontend@0.1.0 dev
+> next dev
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/tomasdiez/Web/fablabs.io/yarn.lock as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/tomasdiez/Web/fablabs.io/frontend/package-lock.json
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.68.101:3000
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 658ms
+ GET / 200 in 484ms (compile: 327ms, render: 158ms)
+ GET /labs 200 in 128ms (compile: 115ms, render: 13ms)
+ GET /api/federation/fablabs 200 in 9.2s (compile: 50ms, render: 9.2s)
+ GET /dido 200 in 517ms (compile: 476ms, render: 40ms)
+ GET /api/federation/fablabs 200 in 50ms (compile: 1749µs, render: 48ms)
+ GET /api/federation/makeworks 200 in 333ms (compile: 28ms, render: 304ms)
+ GET /api/federation/fabcity 200 in 287ms (compile: 32ms, render: 254ms)
+ GET /api/federation/distributed-design 200 in 443ms (compile: 37ms, render: 406ms)
+ GET /labs 200 in 31ms (compile: 7ms, render: 24ms)
+ GET /activity 200 in 69ms (compile: 56ms, render: 13ms)
+ GET /tools 404 in 81ms (compile: 68ms, render: 13ms)
+ GET /tools 404 in 40ms (compile: 6ms, render: 34ms)
+ GET / 200 in 16ms (compile: 3ms, render: 13ms)
+ GET /labs 200 in 17ms (compile: 4ms, render: 13ms)
+ GET /labs 200 in 64ms (compile: 3ms, render: 61ms)
+ GET /api/federation/fabcity 200 in 264ms (compile: 2ms, render: 262ms)
+ GET /labs 200 in 31ms (compile: 4ms, render: 26ms)
+ GET /labs 200 in 33ms (compile: 2ms, render: 31ms)
+ GET /labs 200 in 14ms (compile: 3ms, render: 11ms)
+ GET /labs 200 in 15ms (compile: 3ms, render: 12ms)
+ GET /labs 200 in 18ms (compile: 4ms, render: 15ms)
+ GET /labs 200 in 33ms (compile: 3ms, render: 29ms)
+ GET /labs 200 in 27ms (compile: 1895µs, render: 25ms)
+ GET /labs 200 in 37ms (compile: 4ms, render: 33ms)
+ GET /labs 200 in 30ms (compile: 4ms, render: 27ms)
+ GET /labs 200 in 27ms (compile: 1821µs, render: 25ms)
+ GET / 200 in 38ms (compile: 5ms, render: 34ms)
+ GET /dido 200 in 26ms (compile: 3ms, render: 23ms)
+ GET /dido 200 in 36ms (compile: 4ms, render: 32ms)
+ GET /dido 200 in 33ms (compile: 6ms, render: 27ms)
+ GET /labs 200 in 18ms (compile: 4ms, render: 14ms)
+ GET /labs 200 in 24ms (compile: 2ms, render: 22ms)
+ GET /labs 200 in 29ms (compile: 1724µs, render: 27ms)
+ GET / 200 in 31ms (compile: 7ms, render: 25ms)
+ GET /labs 200 in 22ms (compile: 6ms, render: 16ms)
+ GET /api/federation/fablabs 200 in 151ms (compile: 143ms, render: 7ms)
+ GET /labs 200 in 32ms (compile: 1965µs, render: 30ms)
+ GET /labs 200 in 40ms (compile: 3ms, render: 36ms)
+ GET /labs/fab-lab-oulu 200 in 328ms (compile: 312ms, render: 16ms)
+✓ Compiled in 38ms
+ GET /labs 200 in 392ms (compile: 230ms, render: 162ms)
+ GET /api/federation/fablabs 200 in 18ms (compile: 5ms, render: 13ms)
+ GET /api/federation/makeworks 200 in 318ms (compile: 6ms, render: 312ms)
+ GET /api/federation/fabcity 200 in 261ms (compile: 5ms, render: 257ms)
+ GET /api/federation/distributed-design 200 in 410ms (compile: 4ms, render: 406ms)
+ GET /labs/fab-lab-oulu 200 in 29ms (compile: 12ms, render: 17ms)
+ GET /labs/fab-lab-barcelona 200 in 43ms (compile: 18ms, render: 25ms)
+ GET /labs/fab-lab-barcelona 200 in 45ms (compile: 4ms, render: 41ms)
+ GET /labs 200 in 13ms (compile: 3ms, render: 11ms)
+ GET /labs 200 in 25ms (compile: 1800µs, render: 23ms)
+ GET /labs 200 in 27ms (compile: 3ms, render: 24ms)
+ GET /api/federation/fablabs 200 in 21ms (compile: 6ms, render: 15ms)
+ GET /api/federation/fablabs 200 in 24ms (compile: 21ms, render: 2ms)
+ GET /api/federation/makeworks 200 in 309ms (compile: 2ms, render: 307ms)
+ GET /api/federation/makeworks 200 in 311ms (compile: 4ms, render: 307ms)
+✓ Compiled in 277ms
+✓ Compiled in 63ms
+ GET /labs 200 in 205ms (compile: 80ms, render: 126ms)
+ GET /labs 200 in 27ms (compile: 1675µs, render: 26ms)
+ GET /labs 200 in 36ms (compile: 1956µs, render: 34ms)
+ GET /labs 200 in 30ms (compile: 1984µs, render: 28ms)
+ GET /labs 200 in 24ms (compile: 1689µs, render: 22ms)
+✓ Compiled in 47ms
+ GET /labs 200 in 179ms (compile: 59ms, render: 120ms)
+ GET /labs 200 in 35ms (compile: 4ms, render: 31ms)
+ GET /labs 200 in 26ms (compile: 1564µs, render: 24ms)
+ GET /labs 200 in 25ms (compile: 2ms, render: 22ms)
+✓ Compiled in 156ms
+ GET /api/federation/fablabs 200 in 70ms (compile: 32ms, render: 37ms)
+ GET /labs 200 in 217ms (compile: 91ms, render: 126ms)
+ GET / 200 in 55ms (compile: 10ms, render: 45ms)
+ GET /labs 200 in 19ms (compile: 4ms, render: 15ms)

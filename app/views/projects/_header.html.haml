@@ -1,6 +1,0 @@
-.view-as
-  .btn-group.w-100.d-flex
-    = link_to projects_path, class: "list btn #{action_name == 'index' ? 'btn-primary' : 'btn-default'}" do
-      = icon "list", t("projects.index.list", default: "List")
-    = link_to map_projects_path, class: "map btn #{action_name == 'map' ? 'btn-primary' : 'btn-default'}" do
-      = icon "globe", t("projects.index.map", default: "Map")
