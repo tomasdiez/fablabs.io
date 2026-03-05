@@ -88,3 +88,5 @@
  GET /labs 200 in 217ms (compile: 91ms, render: 126ms)
  GET / 200 in 55ms (compile: 10ms, render: 45ms)
  GET /labs 200 in 19ms (compile: 4ms, render: 15ms)
+ GET /labs 200 in 27ms (compile: 4ms, render: 23ms)
+ GET /api/federation/fablabs 200 in 9ms (compile: 4ms, render: 5ms)
